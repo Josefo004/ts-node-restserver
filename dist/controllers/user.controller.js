@@ -13,6 +13,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.usuariosDELETE = exports.usuariosPATCH = exports.usuariosPUT = exports.usuariosPOST = exports.usuariosGET = void 0;
+const express_validator_1 = require("express-validator");
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const usuario_1 = __importDefault(require("../models/usuario"));
 const usuariosGET = (req, res) => {
@@ -31,6 +32,10 @@ const usuariosPOST = (req, res) => __awaiter(void 0, void 0, void 0, function* (
     //const { nombre, edad } = req.body;
     //const {estado, google, ... resto} = req.body; //excliomos los campos estado y google y mandamos el resto
     //const usuario = new Usuario(resto);
+    const errors = (0, express_validator_1.validationResult)(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json(errors);
+    }
     const { nombre, correo, password, rol } = req.body;
     const usuario = new usuario_1.default({ nombre, password, correo, rol });
     //verificar el correo
