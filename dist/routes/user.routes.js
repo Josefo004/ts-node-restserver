@@ -7,7 +7,13 @@ const validar_campos_1 = require("../middlewares/validar-campos");
 const user_controller_1 = require("../controllers/user.controller");
 const db_validators_1 = require("../helpers/db-validators");
 exports.router = (0, express_1.Router)();
-exports.router.get('/', user_controller_1.usuariosGET);
+exports.router.get('/', [
+    (0, express_validator_1.check)('limite', 'El Limite debe ser numero').isNumeric(),
+    (0, express_validator_1.check)('limite', 'No puede estar vacio ').notEmpty(),
+    (0, express_validator_1.check)('desde', 'Debe ser un Número').isNumeric(),
+    (0, express_validator_1.check)('desde', 'No puede estar vacio ').notEmpty(),
+    validar_campos_1.validarCampos
+], user_controller_1.usuariosGET);
 exports.router.post('/', [
     (0, express_validator_1.check)('nombre', 'El nombre es un campo Obligatorio').notEmpty(),
     (0, express_validator_1.check)('password', 'La contraseañ debe tener mas de 6 caracteres').isLength({ min: 6 }),
@@ -24,5 +30,9 @@ exports.router.put('/:id', [
     validar_campos_1.validarCampos
 ], user_controller_1.usuariosPUT);
 exports.router.patch('/', user_controller_1.usuariosPATCH);
-exports.router.delete('/', user_controller_1.usuariosDELETE);
+exports.router.delete('/:id', [
+    (0, express_validator_1.check)('id', 'No es un ID válido').isMongoId(),
+    (0, express_validator_1.check)('id').custom(db_validators_1.esIdValido),
+    validar_campos_1.validarCampos
+], user_controller_1.usuariosDELETE);
 //# sourceMappingURL=user.routes.js.map

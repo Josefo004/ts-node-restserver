@@ -27,10 +27,24 @@ exports.usuariosDELETE = exports.usuariosPATCH = exports.usuariosPUT = exports.u
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const usuario_1 = __importDefault(require("../models/usuario"));
 const usuariosGET = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    //const query = req.query;
+    const query = req.query;
     //const { nombre, apikey, qq='noname' } = req.query;
-    const usuarios = yield usuario_1.default.find();
+    const qestado = { estado: true };
+    const { limite = 5, desde = 0 } = req.query;
+    /* const usuarios = await Usuario.find(qestado)
+      .skip(Number(desde))
+      .limit(Number(limite));
+    
+    const total = await Usuario.countDocuments(qestado); */
+    const [total, usuarios] = yield Promise.all([
+        usuario_1.default.countDocuments(qestado),
+        usuario_1.default.find(qestado)
+            .skip(Number(desde))
+            .limit(Number(limite))
+    ]);
     res.json({
+        query,
+        total,
         usuarios
     });
 });
@@ -79,10 +93,17 @@ const usuariosPATCH = (req, res) => {
     });
 };
 exports.usuariosPATCH = usuariosPATCH;
-const usuariosDELETE = (req, res) => {
+const usuariosDELETE = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id } = req.params;
+    //borrar fisicamente usuario
+    //const usuario = await Usuario.findByIdAndDelete(id);
+    //borrado Logico
+    const usuario = yield usuario_1.default.findByIdAndUpdate(id, { estado: false });
     res.json({
-        msg: 'DELETE API'
+        msg: 'DELETE API',
+        id,
+        usuario
     });
-};
+});
 exports.usuariosDELETE = usuariosDELETE;
 //# sourceMappingURL=user.controller.js.map
