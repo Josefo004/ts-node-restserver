@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.emailExiste = exports.esRolValido = void 0;
+exports.esIdValido = exports.emailExiste = exports.esRolValido = void 0;
 const role_1 = __importDefault(require("../models/role"));
 const usuario_1 = __importDefault(require("../models/usuario"));
 const esRolValido = (rol) => __awaiter(void 0, void 0, void 0, function* () {
@@ -29,4 +29,11 @@ const emailExiste = (correo) => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 exports.emailExiste = emailExiste;
+const esIdValido = (id) => __awaiter(void 0, void 0, void 0, function* () {
+    const existeId = yield usuario_1.default.findById(id);
+    if (!existeId) {
+        throw new Error(`El ID ${id} NO existe en la BD`);
+    }
+});
+exports.esIdValido = esIdValido;
 //# sourceMappingURL=db-validators.js.map
