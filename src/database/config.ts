@@ -9,7 +9,7 @@ export const dbConnection = async() =>{
     
   } catch (error) {
     console.log(error);
-    throw new Error('Error al conetar ala BD');
+    throw new Error('Error al conetar a la BD');
   }
 
 }

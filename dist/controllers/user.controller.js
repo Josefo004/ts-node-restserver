@@ -28,7 +28,6 @@ const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const usuario_1 = __importDefault(require("../models/usuario"));
 const usuariosGET = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const query = req.query;
-    //const { nombre, apikey, qq='noname' } = req.query;
     const qestado = { estado: true };
     const { limite = 5, desde = 0 } = req.query;
     /* const usuarios = await Usuario.find(qestado)
@@ -56,10 +55,10 @@ const usuariosPOST = (req, res) => __awaiter(void 0, void 0, void 0, function* (
     //const usuario = new Usuario(resto);
     const { nombre, correo, password, rol } = req.body;
     const usuario = new usuario_1.default({ nombre, password, correo, rol });
-    //verificar el correo
     //encriptar la contrseña
     const salt = bcryptjs_1.default.genSaltSync(5);
     usuario.password = bcryptjs_1.default.hashSync(password, salt);
+    //guardar Usuario
     yield usuario.save();
     res.json({
         msg: 'POST API',

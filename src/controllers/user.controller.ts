@@ -9,7 +9,6 @@ import Usuario from '../models/usuario';
 export const usuariosGET = async (req: Request, res: Response) => {
 
   const query = req.query;
-  //const { nombre, apikey, qq='noname' } = req.query;
 
   const qestado = {estado:true};
   const {limite = 5, desde = 0 } = req.query;
@@ -43,10 +42,10 @@ export const usuariosPOST = async(req: Request, res: Response) => {
   const {nombre, correo, password, rol } = req.body;
   const usuario = new Usuario({ nombre, password, correo, rol});
 
-  //verificar el correo
   //encriptar la contrseña
   const salt = bcriptjs.genSaltSync(5);
   usuario.password = bcriptjs.hashSync(password, salt);
+  //guardar Usuario
   await usuario.save();
 
   res.json({

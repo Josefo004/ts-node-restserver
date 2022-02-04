@@ -1,7 +1,8 @@
 import express, { Application } from 'express';
 import cors from 'cors';
 
-import {router as rutasUsuario} from '../routes/user.routes';
+import { router as rutasUsuario} from '../routes/user.routes';
+import { router as rutasAuth  } from '../routes/auth.routes';
 import { dbConnection } from '../database/config';
 
 
@@ -10,6 +11,7 @@ class Server {
   private app           : Application;
   private port          :string;
   private usuariosPath  :string = '/api/usuarios';
+  private authPath      :string = '/api/auth';
 
   constructor () {
     this.app  = express();
@@ -42,6 +44,7 @@ class Server {
 
   routes(){
     this.app.use(this.usuariosPath, rutasUsuario);
+    this.app.use(this.authPath, rutasAuth);
   }
 
   listen(){
