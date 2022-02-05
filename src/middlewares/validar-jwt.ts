@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
-//import jwt from 'jsonwebtoken';
-const jwt = require('jsonwebtoken'); //uso aqui JS para evitar el error de UNDEFINE de payload
+import jwt from 'jsonwebtoken';
+//const jwt = require('jsonwebtoken'); //uso aqui JS para evitar el error de UNDEFINE de payload
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -20,10 +20,8 @@ const validarJWT = (req:Request, res:Response, next: () => void) => {
 
   //Validar token
   try {
-    const {uid} = jwt.verify(token,sopk);  
-    //console.log(payload);
-    req.body.uid = uid;
-      
+    jwt.verify(token,sopk);  
+    
     next();
   } catch (error) {
     console.log(error);
