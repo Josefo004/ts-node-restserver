@@ -15,6 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.login = void 0;
 const usuario_1 = __importDefault(require("../models/usuario"));
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
+const generar_jwt_1 = __importDefault(require("../helpers/generar-jwt"));
 const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { correo, password } = req.body;
     try {
@@ -40,8 +41,10 @@ const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             });
         }
         //generar el JWT
+        const token = yield (0, generar_jwt_1.default)(usuario.id);
         res.json({
-            msg: "Login OK"
+            usuario,
+            token
         });
     }
     catch (error) {

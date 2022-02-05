@@ -88,6 +88,8 @@ export const usuariosPATCH = (req: Request, res: Response) => {
 export const usuariosDELETE = async (req: Request, res: Response) => {
   const {id} = req.params;
 
+  const uid = req.body.uid;
+
   //borrar fisicamente usuario
   //const usuario = await Usuario.findByIdAndDelete(id);
 
@@ -97,7 +99,8 @@ export const usuariosDELETE = async (req: Request, res: Response) => {
   res.json({
     msg:'DELETE API',
     id,
-    usuario
+    usuario,
+    uid
   });
 }
 

@@ -1,9 +1,13 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.router = void 0;
 const express_1 = require("express");
 const express_validator_1 = require("express-validator");
 const validar_campos_1 = require("../middlewares/validar-campos");
+const validar_jwt_1 = __importDefault(require("../middlewares/validar-jwt"));
 const user_controller_1 = require("../controllers/user.controller");
 const db_validators_1 = require("../helpers/db-validators");
 exports.router = (0, express_1.Router)();
@@ -31,6 +35,7 @@ exports.router.put('/:id', [
 ], user_controller_1.usuariosPUT);
 exports.router.patch('/', user_controller_1.usuariosPATCH);
 exports.router.delete('/:id', [
+    validar_jwt_1.default,
     (0, express_validator_1.check)('id', 'No es un ID válido').isMongoId(),
     (0, express_validator_1.check)('id').custom(db_validators_1.esIdValido),
     validar_campos_1.validarCampos

@@ -3,6 +3,8 @@ import { Router } from 'express';
 import { check } from 'express-validator';
 
 import { validarCampos } from '../middlewares/validar-campos';
+import validarJWT from '../middlewares/validar-jwt';
+
 import { usuariosDELETE, 
          usuariosGET, 
          usuariosPATCH, 
@@ -40,6 +42,7 @@ router.put('/:id',[
 router.patch('/', usuariosPATCH);    
 
 router.delete('/:id',[
+  validarJWT,
   check('id', 'No es un ID válido').isMongoId(),
   check('id').custom( esIdValido ),
   validarCampos

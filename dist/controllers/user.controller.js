@@ -94,6 +94,7 @@ const usuariosPATCH = (req, res) => {
 exports.usuariosPATCH = usuariosPATCH;
 const usuariosDELETE = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
+    const uid = req.body.uid;
     //borrar fisicamente usuario
     //const usuario = await Usuario.findByIdAndDelete(id);
     //borrado Logico
@@ -101,7 +102,8 @@ const usuariosDELETE = (req, res) => __awaiter(void 0, void 0, void 0, function*
     res.json({
         msg: 'DELETE API',
         id,
-        usuario
+        usuario,
+        uid
     });
 });
 exports.usuariosDELETE = usuariosDELETE;
