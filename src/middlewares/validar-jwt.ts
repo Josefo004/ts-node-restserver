@@ -11,12 +11,14 @@ const validarJWT = (req:Request, res:Response, next: () => void) => {
 
   const token = req.header('x-token');
   
+  //verificar si viene el token
   if (!token) {
     return res.status(401).json({
       msg: "No hay token en la petición"
     });
   }
 
+  //Validar token
   try {
     const {uid} = jwt.verify(token,sopk);  
     //console.log(payload);
