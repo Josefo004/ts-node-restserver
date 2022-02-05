@@ -1,13 +1,15 @@
 import { Request, Response } from 'express';
-import jwt from 'jsonwebtoken';
-//const jwt = require('jsonwebtoken'); //uso aqui JS para evitar el error de UNDEFINE de payload
+//import jwt from 'jsonwebtoken';
+const jwt = require('jsonwebtoken'); //uso aqui JS para evitar el error de UNDEFINE de payload
 import dotenv from 'dotenv';
+
+import Usuario from '../models/usuario';
 
 dotenv.config();
 
 const sopk:string = process.env.SECRETORPRIVATEKEY || '';
 
-const validarJWT = (req:Request, res:Response, next: () => void) => {
+const validarJWT = async (req:Request, res:Response, next: () => void) => {
 
   const token = req.header('x-token');
   
@@ -20,7 +22,23 @@ const validarJWT = (req:Request, res:Response, next: () => void) => {
 
   //Validar token
   try {
-    jwt.verify(token,sopk);  
+    const { uid } = jwt.verify(token,sopk); 
+    const usuarioAutenticado = await Usuario.findById(uid);
+
+    if(!usuarioAutenticado){
+      return res.status(401).json({
+        msg: "token no valido - usuario borrado de la DB"
+      });
+    }
+
+    //verificar si el uid tiene estado true
+    if(!usuarioAutenticado?.estado){
+      return res.status(401).json({
+        msg: "token no valido - usuario con estado false"
+      });
+    }
+    
+    req.body.uAutenticado = usuarioAutenticado;
     
     next();
   } catch (error) {
@@ -33,4 +51,6 @@ const validarJWT = (req:Request, res:Response, next: () => void) => {
 
 }
 
-export default validarJWT;
+export {
+  validarJWT
+}

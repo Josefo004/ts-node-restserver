@@ -87,17 +87,13 @@ export const usuariosPATCH = (req: Request, res: Response) => {
 
 export const usuariosDELETE = async (req: Request, res: Response) => {
   const {id} = req.params;
+  const usuarioAutenticado = req.body.uAutenticado;
 
-  //borrar fisicamente usuario
-  //const usuario = await Usuario.findByIdAndDelete(id);
-
-  //borrado Logico
   const usuario = await Usuario.findByIdAndUpdate(id, {estado:false});
 
   res.json({
-    msg:'DELETE API',
-    id,
-    usuario
+    usuario,
+    usuarioAutenticado
   });
 }
 
