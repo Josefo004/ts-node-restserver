@@ -12,10 +12,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.login = void 0;
+exports.logingoogle = exports.login = void 0;
 const usuario_1 = __importDefault(require("../models/usuario"));
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const generar_jwt_1 = __importDefault(require("../helpers/generar-jwt"));
+const google_verify_1 = require("../helpers/google-verify");
 const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { correo, password } = req.body;
     try {
@@ -55,4 +56,20 @@ const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 exports.login = login;
+const logingoogle = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id_token } = req.body;
+    try {
+        const googleUser = yield (0, google_verify_1.googleVerify)(id_token);
+        console.log(googleUser);
+        res.json({
+            msg: "Todo Ok!",
+            id_token,
+        });
+    }
+    catch (error) {
+        console.log(error);
+        throw new Error("No se pudo Verificar el ID_TOKEN de Google");
+    }
+});
+exports.logingoogle = logingoogle;
 //# sourceMappingURL=auth.controller.js.map

@@ -11,4 +11,8 @@ exports.router.post('/login', [
     (0, express_validator_1.check)('password', 'La contraseña es obligatoria').notEmpty(),
     validar_campos_1.validarCampos
 ], auth_controller_1.login);
+exports.router.post('/google', [
+    (0, express_validator_1.check)('id_token', 'Token de Google es Nesesario').notEmpty(),
+    validar_campos_1.validarCampos
+], auth_controller_1.logingoogle);
 //# sourceMappingURL=auth.routes.js.map

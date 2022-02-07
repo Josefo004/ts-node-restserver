@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import Usuario from '../models/usuario';
 import bcriptjs from 'bcryptjs';
 import generarJWT from '../helpers/generar-jwt';
+import { googleVerify } from '../helpers/google-verify';
 
 export const login = async(req: Request, res: Response) => { 
 
@@ -48,4 +49,20 @@ export const login = async(req: Request, res: Response) => {
     });
   }
 
+}
+
+export const logingoogle = async(req: Request, res: Response) => {
+  const { id_token } = req.body;
+  try {
+    const googleUser = await googleVerify(id_token);
+    console.log(googleUser);
+    
+    res.json({
+      msg: "Todo Ok!",
+      id_token,
+    });
+  } catch (error) {
+    console.log(error);
+    throw new Error("No se pudo Verificar el ID_TOKEN de Google");
+  }
 }
