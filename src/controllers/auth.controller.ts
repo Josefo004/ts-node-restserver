@@ -54,12 +54,34 @@ export const login = async(req: Request, res: Response) => {
 export const logingoogle = async(req: Request, res: Response) => {
   const { id_token } = req.body;
   try {
-    const googleUser = await googleVerify(id_token);
-    console.log(googleUser);
+    const {nombre, img, correo} = await googleVerify(id_token);
+
+    let usuario = await Usuario.findOne({ correo });
+
+    if (!usuario) {
+      const data = {
+        nombre,
+        correo,
+        password: ':P',
+        img,
+        google:true
+      }
+      usuario = new Usuario(data);
+      await usuario.save();
+    }
+
+    if (!usuario.estado) {
+      return res.status(401).json({
+        msg: 'Usuario Bloqueado - hable con el administrador'
+      });
+    }
+
+    //generar el JWT
+    const token = await generarJWT(usuario.id);
     
     res.json({
-      msg: "Todo Ok!",
-      id_token,
+      usuario,
+      token
     });
   } catch (error) {
     console.log(error);
